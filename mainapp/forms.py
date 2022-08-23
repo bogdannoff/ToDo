@@ -8,15 +8,7 @@ from django.core.exceptions import ValidationError
 from .models import *
 
 
-# class AddTaskForm(forms.Form):
-#     title = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class':'text-input'}))
-#     description = forms.CharField(max_length=1000, widget=forms.Textarea(attrs={'class':'text-input'}))
-
 class AddTaskForm(forms.ModelForm):
-    # project = forms.ModelChoiceField(queryset=Projects.objects.all(),
-    #                                                 # empty_label='Select project',
-    #                                                 widget=forms.Select(
-    #                                                     attrs={'class': 'btn btn-secondary dropdown-toggle'}))
 
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
