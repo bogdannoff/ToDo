@@ -1,0 +1,19 @@
+{% block top_bar %}
+
+<nav class="navbar bg-dark ">
+  <div class="container-fluid justify-content-end">
+      {% if request.user.is_authenticated %}
+      <p>
+          <a class="navbar-brand text-light" href="#">{{user.username}}</a>
+          <a class="navbar-brand text-light" href="{% url 'logout' %}">Logout</a>
+      </p>
+      {% else %}
+      <p>
+          <a class="navbar-brand text-light" href="{% url 'signup' %}">SignUp</a>
+          <a class="navbar-brand text-light" href="{% url 'login' %}">Login</a>
+      </p>
+      {% endif %}
+  </div>
+</nav>
+
+{% endblock %}

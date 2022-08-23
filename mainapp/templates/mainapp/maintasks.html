@@ -1,0 +1,20 @@
+{% extends 'mainapp/layout.html' %}
+{% block content %}
+
+{% for x in page_obj %}
+
+     <p>{{x.id}}  {{x}}</p>
+
+{% endfor %}
+
+<nav>
+    <ul>
+{% for p in page_obj.paginator.page_range %}
+        <li>
+            <a href="?page={{p}}">{{p}}</a>
+        </li>
+{% endfor %}
+    </ul>
+</nav>
+
+{% endblock %}

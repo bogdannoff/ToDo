@@ -1,0 +1,92 @@
+{% extends 'mainapp/layout.html' %}
+{% block content %}
+<div class="mx-5 my-5">
+
+
+<div >
+<!--  <button type="button" class="list-group-item active bg-dark-theme py-4" aria-current="true">
+    Tasks
+  </button>-->
+    <div class="d-flex flex-column gap-3 justify-content-center">
+      {% for x in tasklist %}
+        <a href="{{x.get_absolute_url}}" class="task_list_item">
+    <div class="toast show w-100" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header align-items-stretch d-flex flex-column">
+        <div class="d-flex  justify-content-between ">
+            <div class="d-block gap-1 pb-1">
+                <span class="badge border border-secondary border-opacity-50 bg-transparent fw-semibold text-secondary">{{x.target_date|date:"d M Y"}}</span>
+                {% if x.project != None %}
+                <span class="badge border border-secondary border-opacity-50 bg-transparent fw-semibold text-secondary">{{x.project}}</span>
+                {% endif %}
+            </div>
+            <div class="d-flex">
+                <small>{{x.date_create|timesince}}</small>
+            </div>
+        </div>
+
+          <p class="text-break text-dark fw-semibold my-0">{{x.title}}<strong class="me-auto"></strong></p>
+
+      </div>
+      <div class="toast-body">
+         <p class="text-break text-dark fw-normal my-0">{{x.description}}<strong class="me-auto"></strong></p>
+      </div>
+    </div>
+        </a>
+      {% endfor %}
+      </div>
+
+        <a href="{% url 'add_task' %}" class="task_list_item">
+            <button type="button" class="list-group-item list-group-item-action py-4">
+                <span class="icon_add" aria-hidden="true">
+                    <svg width="13" height="13">
+                        <path d="M6 6V.5a.5.5 0 0 1 1 0V6h5.5a.5.5 0 1 1 0 1H7v5.5a.5.5 0 1 1-1 0V7H.5a.5.5 0 0 1 0-1H6z" fill="currentColor" fill-rule="evenodd"></path>
+                    </svg>
+                </span>
+                Add task
+            </button>
+        </a>
+      </div>
+
+
+       {% if page_obj.has_other_pages %}
+
+        <nav aria-label="..." class="d-flex justify-content-center mt-3">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{page_obj.previous_page_number}}"> < </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link"> < </a>
+                    </li>
+                {% endif %}
+                {% for p in paginator.page_range %}
+                    {% if page_obj.number == p %}
+                        <li class="page-item active" aria-current="page">
+                            <span class="page-link">{{p}}</span>
+                        </li>
+                    {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{p}}">{{p}}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{page_obj.next_page_number}}"> > </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link"> > </a>
+                    </li>
+                {% endif %}
+           </ul>
+        </nav>
+        {% endif %}
+
+ </div>
+
+
+
+{% endblock %}
