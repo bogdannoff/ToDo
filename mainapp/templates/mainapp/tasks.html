@@ -1,13 +1,12 @@
 {% extends 'mainapp/layout.html' %}
 {% block content %}
-<div class="mx-5 my-5">
 
+{% load mainapp_tags %}
 
-<div >
 <!--  <button type="button" class="list-group-item active bg-dark-theme py-4" aria-current="true">
     Tasks
   </button>-->
-    <div class="d-flex flex-column gap-3 justify-content-center">
+  <!--  <div class="d-flex flex-column gap-3 justify-content-center">
       {% for x in tasklist %}
         <a href="{{x.get_absolute_url}}" class="task_list_item">
     <div class="toast show w-100" role="alert" aria-live="assertive" aria-atomic="true">
@@ -87,6 +86,90 @@
 
  </div>
 
+-->
+
+
+
+    <div class="list-group">
+        <div class="list-group-item list-group-item-action  list-group-item-dark label text-secondary d-flex gap-3 py-2">
+                 <div class="flex-grow-1">
+                     {{title}}
+                 </div>
+                 <a href="{% url 'add_task' %}" class="p-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-plus-circle-fill text-secondary" viewBox="0 0 16 16">
+                              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                            </svg>
+                 </a>
+        </div>
+        {% for x in tasklist %}
+        <a href="{{x.get_absolute_url}}" class="list-group-item list-group-item-action  list-group-item-dark text-secondary d-flex gap-3 py-3">
+            <div class="d-flex flex-fill flex-column gap-2">
+                <div class="d-flex  flex-fill">
+                    <div class="flex-grow-1 gap-1 pb-1">
+                        {% if x.complete %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-square text-success" viewBox="0 0 16 16">
+                            <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                            <path d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z"/>
+                        </svg>
+                        {% endif %}
+                        <span class="badge border border-secondary border-opacity-50 bg-transparent fw-semibold text-secondary">{{x.target_date|date:"d M Y"}}</span>
+                        {% if x.project != None %}
+                        <span class="badge border border-secondary border-opacity-50 bg-transparent fw-semibold text-secondary">{{x.project}}</span>
+                        {% endif %}
+                    </div>
+                    <div class="">
+                        <small>{{x.date_create|timesince}}</small>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-white text-break fw-normat my-0">{{x.title}}<strong class="me-auto"></strong></p>
+                    <p class="text-break  fw-light my-0">{{x.description}}<strong class="me-auto"></strong></p>
+                </div>
+            </div>
+        </a>
+      {% endfor %}
+
+    </div>
+
+
+
+       {% if page_obj.has_other_pages %}
+
+        <nav aria-label="..." class="d-flex justify-content-center mt-3">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link text-secondary" href="?page={{page_obj.previous_page_number}}"> < </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link text-secondary"> < </a>
+                    </li>
+                {% endif %}
+                {% for p in paginator.page_range %}
+                    {% if page_obj.number == p %}
+                        <li class="page-item active" aria-current="page">
+                            <span class="page-link ">{{p}}</span>
+                        </li>
+                    {% else %}
+                        <li class="page-item">
+                            {% get_url_params p as params %}
+                            <a class="page-link text-secondary" href="?{{params}}">{{p}}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link text-secondary" href="?page={{page_obj.next_page_number}}"> > </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link text-secondary"> > </a>
+                    </li>
+                {% endif %}
+           </ul>
+        </nav>
+        {% endif %}
 
 
 {% endblock %}

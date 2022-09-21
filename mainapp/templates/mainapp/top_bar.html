@@ -1,19 +1,23 @@
 {% block top_bar %}
 
-<nav class="navbar bg-dark ">
-  <div class="container-fluid justify-content-end">
-      {% if request.user.is_authenticated %}
-      <p>
-          <a class="navbar-brand text-light" href="#">{{user.username}}</a>
-          <a class="navbar-brand text-light" href="{% url 'logout' %}">Logout</a>
-      </p>
-      {% else %}
-      <p>
-          <a class="navbar-brand text-light" href="{% url 'signup' %}">SignUp</a>
-          <a class="navbar-brand text-light" href="{% url 'login' %}">Login</a>
-      </p>
-      {% endif %}
-  </div>
+<nav id="main-nav-bar" class="navbar navbar-dark bg-dark">
+    <div class="container-fluid justify-content-end">
+        {% if request.user.is_authenticated %}
+
+            <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{user.username}}
+                </a>
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
+                    <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                </div>
+            </div>
+
+        {% else %}
+            <a class="navbar-item text-light" href="{% url 'signup' %}">Sign up</a>
+            <a class="navbar-item text-light" href="{% url 'login' %}">Login</a>
+        {% endif %}
+    </div>
 </nav>
 
 {% endblock %}

@@ -10,25 +10,13 @@
             <button type="button" class="btn-close btn-close-white" onclick="history.back();" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="list-group-item list-group-item-action nohover list-group-item-dark text-secondary d-flex flex-column gap-1 py-2">
-            <div class="form-error">{{form.non_field_errors}}</div>
-            {% for x in form %}
-                {% if x != form.target_date and x != form.project %}
-                    <div class="form-error">{{x.errors}}</div>
-                    <div class="d-flex flex-row  mb-3">
-                        {{x}}
-                    </div>
-                {% endif %}
-            {% endfor %}
+            <p>Are you sure you want to delete "{{ object }}"?</p>
             <div class="d-flex flex-row justify-content-between mb-3">
                 <div class="d-flex flex-row py-1">
-                    {{form.target_date}}
-                    {{form.project}}
+                    <button type="submit" class="btn btn-outline-secondary">Yes</button>
                 </div>
                 <div class="d-flex flex-row py-1">
-                    {%if delete_action %}
-                        <button type="reset" onclick="window.location.href='{{delete_action_url}}'" class="btn btn-outline-secondary">Delete</button>
-                    {% endif %}
-                    <button type="submit" class="btn btn-outline-secondary">{{ action_name }}</button>
+                    <button type="button" onclick="history.back();" class="btn btn-outline-secondary">No</button>
                 </div>
             </div>
         </div>

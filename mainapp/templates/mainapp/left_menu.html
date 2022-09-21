@@ -1,74 +1,44 @@
 {% load mainapp_tags%}
 
 {% block left_menu %}
-
-<ul id="top-menu" class="menu_area">
-
-    {% for x in menulist %}
-
-    <li class="menu_item">
-        <div >
-            {% url x.url_name as ur%}
-            {% tag_is_equals request.path_info ur as path %}
-            {% if path %}
-            <div class="menu_bar active_menu_bar">
-            {% else %}
-            <div class="menu_bar">
-            {% endif %}
-                <a class="menu_item" href="{% url x.url_name %}">
-                    <span>
-                        <svg width="24" height="24" viewBox="0 0 24 24">
-                            <g>
-                                <path d="M10 14.5a2 2 0 104 0h5.5V18a1.5 1.5 0 01-1.5 1.5H6A1.5 1.5 0 014.5 18v-3.5H10z" opacity="0.1"></path>
-                                <path d="M8.062 4h7.876a2 2 0 011.94 1.515l2.062 8.246a2 2 0 01.06.485V18a2 2 0 01-2 2H6a2 2 0 01-2-2v-3.754a2 2 0 01.06-.485l2.06-8.246A2 2 0 018.061 4zm0 1a1 1 0 00-.97.757L5.03 14.004a1 1 0 00-.03.242V18a1 1 0 001 1h12a1 1 0 001-1v-3.754a1 1 0 00-.03-.242l-2.06-8.247A1 1 0 0015.94 5H8.061zM12 17.25A2.75 2.75 0 019.295 15H7a.5.5 0 110-1h2.75a.5.5 0 01.5.5 1.75 1.75 0 003.5 0 .5.5 0 01.5-.5H17a.5.5 0 110 1h-2.295A2.75 2.75 0 0112 17.25z"></path>
-                            </g>
-                        </svg>
-                    </span>
-                    <span>{{x.name}}</span>
-                </a>
-                <div></div>
+    <div class="list-group">
+        {% for x in menulist %}
+             <a href="{{ x.url_name }}" class="list-group-item list-group-item-action {% if x.active %}active{% endif %} list-group-item-dark text-secondary d-flex gap-3 py-2">
+                 <div class="flex-grow-1">
+                     {{x.name}}
+                 </div>
+                 {% if x.undone_count > 0 %}
+                 <span class="badge border border-secondary border-opacity-50 bg-transparent fw-semibold {% if x.active %}text-success{% else %}text-secondary{% endif %}">
+                     {{x.undone_count}}
+                 </span>
+                 {% endif %}
+             </a>
+        {% endfor %}
+        <div href="#" class="list-group-item list-group-item-dark label text-secondary d-flex gap-3 py-0">
+            <div class="flex-grow-1 py-2">
+               Projects
             </div>
-        </div>
-    </li>
+            <a href="{% url 'add_project' %}" class="py-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill text-secondary" viewBox="0 0 16 16">
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                </svg>
+            </a>
+       </div>
+       {% for x in projects %}
+            <a href="{{ x.url_name }}" class="list-group-item list-group-item-action {% if x.active %}active{% endif %} list-group-item-dark text-secondary d-flex flex-fill gap-3 py-2">
+                <div class="flex-grow-1">
+                    {{x.name}}
+                </div>
+                {% if x.undone_count > 0 %}
+                <div class="badge border border-secondary border-opacity-50 bg-transparent fw-semibold {% if x.active %}text-success{% else %}text-secondary{% endif %}">
+                    {{x.undone_count}}
+                </div>
+                {% endif %}
+            </a>
+        {% endfor %}
+    </div>
 
-    {% endfor %}
 
-</ul>
-
-
-            <div class="menu_header">
-                <span class="menu_header">Project</span>
-            </div>
-
-
-<ul id="proj-menu" class="menu_area">
-
-    {% tag_projects as projects  %}
-    {% for x in projects %}
-    <li class="menu_item">
-        <div >
-            {% tag_is_equals request.path_info x.get_absolute_url as path  %}
-            {% if path %}
-            <div class="menu_bar active_menu_bar">
-            {% else %}
-            <div class="menu_bar">
-            {% endif %}
-                <a class="menu_item" href="{{ x.get_absolute_url }}">
-                    <span>
-                        <svg width="24" height="24" viewBox="0 0 24 24">
-                            <circle cx="12" cy="12" r="4" fill="none" stroke="black" />
-                        </svg>
-                    </span>
-                    <span>{{x.title}}</span>
-                </a>
-                <div></div>
-            </div>
-        </div>
-    </li>
-
-    {% endfor %}
-
-</ul>
 
 
 {% endblock %}

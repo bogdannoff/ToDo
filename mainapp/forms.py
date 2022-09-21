@@ -14,39 +14,57 @@ class AddTaskForm(forms.ModelForm):
         super().__init__(*args,**kwargs)
         self.fields['title'] = forms.CharField(required=True,
                                                 label="",
-                                                widget=forms.TextInput(attrs={'class': 'text-input',
+                                                widget=forms.TextInput(attrs={'class': 'form-control dark-theme-element flex-fill',
                                                                               'placeholder': 'Title'}))
         self.fields['description'] = forms.CharField(required=False,
                                                      label="",
-                                                     widget=forms.Textarea(attrs={'class': 'text-input',
+                                                     widget=forms.Textarea(attrs={'class': 'form-control dark-theme-element flex-fill',
                                                                                   'rows': '5',
                                                                                   'placeholder': 'Description'}))
         self.fields['target_date'] = forms.DateField(required=False,
                                                      initial=datetime.datetime.now,
                                                      widget=forms.DateInput(attrs={'type': 'date',
-                                                                                   'class': 'form-control me-2'}))
+                                                                                   'class': 'form-control dark-theme-element text-secondary flex-fill me-2'}))
         self.fields['project'] = forms.ModelChoiceField(required=False,
-                                                        queryset=Projects.objects.all(),
+                                                        queryset=Projects.objects.filter(user=kwargs['initial']['user']),
                                                         empty_label='Select project',
-                                                        widget=forms.Select(attrs={'class': 'btn btn-secondary dropdown-toggle'}))
+                                                        widget=forms.Select(attrs={'class': 'btn btn-outline-secondary dropdown-toggle'}))
 
     class Meta:
         model = Tasks
         fields = ['title', 'description', 'target_date', 'project']
-        # widgets = {
-        #     'title': forms.TextInput(attrs={'class': 'text-input'}),
-        #     'description': forms.Textarea(attrs={'class': 'text-input'}),
-        #     'target_date': forms.DateInput(attrs={'type': 'date',
-        #                                           'class': 'form-control me-2'},
-        #                                    format='%Y-%m-%dT%H:%M'),
-        #     'project': forms.Select(attrs={'class': 'dropdown'}),
-        # }
-
 
     def clean_title(self):
         if len(self.cleaned_data['title']) > 50:
             raise ValidationError('Title can contain only 50 chars')
         return self.cleaned_data['title']
+
+
+class DetailTaskForm(AddTaskForm):
+
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        self.fields['complete'] = forms.BooleanField(required=False,
+                                                label="Done",
+                                                widget=forms.CheckboxInput(attrs={'class': 'form-check-input dark-theme-element'}))
+
+    class Meta:
+        model = Tasks
+        fields = ['complete', 'title', 'description', 'target_date', 'project']
+
+
+class AddProjectForm(forms.ModelForm):
+
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        self.fields['title'] = forms.CharField(required=True,
+                                                label="",
+                                                widget=forms.TextInput(attrs={'class': 'form-control dark-theme-element flex-fill',
+                                                                              'placeholder': 'Title'}))
+    class Meta:
+        model = Projects
+        fields = ['title']
+
 
 
 class UserRegisterForm(UserCreationForm):
